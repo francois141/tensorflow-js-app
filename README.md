@@ -10,5 +10,3 @@
 
 - [ ] Add canvas + prediction using the model
 - [ ] Integrate in REACT JS
-- [ ] Add neural style transfer
-- [ ] Add face detection
