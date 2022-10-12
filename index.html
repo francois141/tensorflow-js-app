@@ -19,12 +19,14 @@
     <!-- Import the main script file -->
     <script src="script.js" type="module"></script>
 
+    <link href="style.css" rel="stylesheet">
+
 </head>
 
 <body>
 
-    <h2>MNIST Tensorflow JS example (pls draw when the training is done)</h2>
-    <canvas id="drawCanvas" width="560" height="560"></canvas>
+    <h2>MNIST Tensorflow JS example</h2>
+    <div width="100%"><canvas id="drawCanvas" width="560" height="560"></canvas></div>
     <button id="predictionButton" type="button" onclick="click()">Perform prediction</button>
     <button id="clearButton" type="button" onclick="clear()">Clear the canvas</button>
     <h2 id="prediction">The predicted digit is : </h2>
