@@ -94,13 +94,14 @@ async function train(model, data) {
     return model.fit(X_train, y_train, {
         batchSize: BATCH_SIZE,
         validationData: [X_test, y_test],
-        epochs: 10,
+        epochs: 1,
         shuffle: true,
         callbacks: fitCallbacks,
     });
 }
 
 async function run() {
+
     const data = new MnistData();
     await data.load();
     await showExamples(data);
@@ -112,6 +113,8 @@ async function run() {
 
     await showAccuracy(model, data);
     await showConfusion(model, data);
+
+    return model;
 }
 
 const classNames = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -143,4 +146,56 @@ async function showConfusion(model, data) {
     tfvis.render.confusionMatrix(container, { values: confusionMatrix, tickLabels: classNames });
 }
 
-document.addEventListener('DOMContentLoaded', run);
+var canvas = document.getElementById("drawCanvas");
+
+var ctx = canvas.getContext("2d");
+ctx.beginPath();
+ctx.lineWidth = "6";
+ctx.strokeStyle = "#000000";
+ctx.rect(0, 0, 560, 560);
+ctx.stroke();
+
+let coord = { x: 0, y: 0 };
+
+
+function startDraw(event) {
+    document.addEventListener('mousemove', draw);
+    reposition(event);
+}
+function reposition(event) {
+    coord.x = event.clientX - canvas.offsetLeft;
+    coord.y = event.clientY - canvas.offsetTop;
+}
+
+function draw(event) {
+    ctx.beginPath();
+    ctx.lineWidth = 20;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = "#000000";
+    ctx.moveTo(coord.x, coord.y);
+    reposition(event);
+    ctx.lineTo(coord.x, coord.y);
+    ctx.stroke();
+}
+
+function stopDraw() {
+    document.removeEventListener('mousemove', draw);
+}
+
+document.addEventListener('mousedown', startDraw);
+document.addEventListener('mouseup', stopDraw);
+
+
+export async function inference() {
+    var image = ctx.getImageData(0, 0, canvas.height, canvas.width);
+    image = tf.browser.fromPixels(image);
+    image = tf.image.resizeBilinear(image, [28, 28])
+    image = tf.mean(image, 2, true)
+    image = image.reshape([1, 28, 28, 1]);
+    console.log("Loading the model")
+    let model = await run();
+    model.predict(image).argMax(-1).data().then(data => {
+        let placeholder = document.getElementById("prediction");
+        placeholder.innerText = data[0];
+    });
+}

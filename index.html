@@ -1,24 +1,57 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TensorFlow.js Tutorial</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TensorFlow.js Tutorial</title>
 
-  <!-- Import TensorFlow.js -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
-  <!-- Import tfjs-vis -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+    <!-- Import TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+    <!-- Import tfjs-vis -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
 
-  <!-- Import the data file -->
-  <script src="data.js" type="module"></script>
+    <!-- Import the data f
+        ile -->
+    <script src="data.js" type="module"></script>
 
-  <!-- Import the main script file -->
-  <script src="script.js" type="module"></script>
+    <!-- Import the main script file -->
+    <script src="script.js" type="module"></script>
 
 </head>
 
 <body>
+
+    <h2>MNIST Tensorflow JS example (pls draw when the training is done)</h2>
+    <canvas id="drawCanvas" width="560" height="560"></canvas>
+    <button id="predictionButton" type="button" onclick="click()">Perform prediction</button>
+    <button id="clearButton" type="button" onclick="clear()">Clear the canvas</button>
+    <h2 id="prediction">The predicted digit is : </h2>
+
+    <script type="module">
+
+        import {inference} from './script.js';
+
+        function predict() {
+            inference();
+        }
+        function clear() {
+            var canvas = document.getElementById("drawCanvas");
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(0, 0, 560, 560);
+            ctx.beginPath();
+            ctx.lineWidth = "6";
+            ctx.strokeStyle = "#000000";
+            ctx.rect(0, 0, 560, 560);
+            ctx.stroke();
+        }
+        document.getElementById("predictionButton").addEventListener("click", predict);
+        document.getElementById("clearButton").addEventListener("click", clear);
+    </script>
+
+
 </body>
+
 </html>
