@@ -27,30 +27,18 @@
 
     <h2>MNIST Tensorflow JS example</h2>
     <div width="100%"><canvas id="drawCanvas" width="560" height="560"></canvas></div>
-    <button id="predictionButton" type="button" onclick="click()">Perform prediction</button>
+    <button id="trainButton" type="button" onclick="click()">Train the model </button>
+    <button id="inferenceButton" type="button" onclick="click()">Perform inference</button>
     <button id="clearButton" type="button" onclick="clear()">Clear the canvas</button>
     <h2 id="prediction">The predicted digit is : </h2>
 
     <script type="module">
+        import { inference, train, clear } from './script.js';
 
-        import {inference} from './script.js';
-
-        function predict() {
-            inference();
-        }
-        function clear() {
-            var canvas = document.getElementById("drawCanvas");
-            var ctx = canvas.getContext("2d");
-            ctx.fillStyle = "#FFFFFF";
-            ctx.fillRect(0, 0, 560, 560);
-            ctx.beginPath();
-            ctx.lineWidth = "6";
-            ctx.strokeStyle = "#000000";
-            ctx.rect(0, 0, 560, 560);
-            ctx.stroke();
-        }
-        document.getElementById("predictionButton").addEventListener("click", predict);
+        document.getElementById("trainButton").addEventListener("click", train);
+        document.getElementById("inferenceButton").addEventListener("click", inference);
         document.getElementById("clearButton").addEventListener("click", clear);
+
     </script>
 
 
