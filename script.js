@@ -20,6 +20,21 @@ function startProgram() {
 
 /** These 3 functions are for the creation, training and inference part of the deep learning model **/
 
+function createConvBlock(inputShape,kernelSize=3,filters=8,strides=1,activation='relu') {
+
+    return tf.layers.conv2d({
+        inputShape: inputShape,
+        kernelSize: 5,
+        filters: 8,
+        strides: 1,
+        activation: 'relu'
+    })
+}
+
+function createMaxPoolBlock() {
+    return tf.layers.maxPooling2d({ poolSize: [2, 2], strides: [2, 2] });
+}
+
 function createModel() {
 
     const model = tf.sequential();
@@ -27,14 +42,15 @@ function createModel() {
     const INPUT_SHAPE = [28, 28, 1];
     const NUM_OUTPUT_CLASSES = 10;
 
-    model.add(tf.layers.conv2d({
-        inputShape: INPUT_SHAPE,
-        kernelSize: 5,
-        filters: 8,
-        strides: 1,
-        activation: 'relu'
-    }));
-    model.add(tf.layers.maxPooling2d({ poolSize: [2, 2], strides: [2, 2] }));
+    const kernelSize = 3;
+    const baseFilters = 8;
+    const strides = 1;
+
+    model.add(createConvBlock(INPUT_SHAPE,kernelSize,baseFilters,strides));
+    model.add(createMaxPoolBlock());
+
+    model.add(createConvBlock([14,14,baseFilters],kernelSize,baseFilters*2,strides));
+    model.add(createMaxPoolBlock());
 
     model.add(tf.layers.flatten());
     model.add(tf.layers.dense({
@@ -85,7 +101,7 @@ async function trainModel(model, data) {
     return model.fit(X_train, y_train, {
         batchSize: BATCH_SIZE,
         validationData: [X_test, y_test],
-        epochs: 1,
+        epochs: 20,
         shuffle: true,
         callbacks: fitCallbacks,
     });
