@@ -1,14 +1,11 @@
 # tensorflow-js-app
 
-## A simple app I created to learn tensorflow js
+## A simple deep learning web app 
 
-The goal of this simple web app is to get started with the library tensorflow.js
+The goal of this simple web app is to get started and learn the basics of the library tensorflow.js
 
-#### Helpers
+#### Check if the GPU is enable on google chrome
 
--> chrome://gpu ==> check if gpu is being used
+Write the following link in the browser chrome://gpu 
+You get a report with the current state of your machine.
 
-#### TODO:
-
-- [ ] Add canvas + prediction using the model
-- [ ] Integrate in REACT JS
